@@ -1,3 +1,5 @@
+#ifndef JEXP_HPP
+#define JEXP_HPP
 #include <iostream>
 #include <string>
 
@@ -9,7 +11,7 @@ using namespace std;
 	inherited from JExpr, right?*/
 class JExpr{
 public:
-	virtual string pp() = 0;
+	virtual string print() = 0;
 	virtual JExpr* interp() = 0;
 };
 
@@ -20,10 +22,10 @@ public:
 	JNum(int num): n(num) {} //example used JNum(int n): n(n) but I think that's ugly
 	
 	JExpr* interp(){return this;} //JNum.interp() = JNum
-	string pp(){return to_string(n);}
+	string print(){return to_string(n);}
 };
 
-/*An expression where addition is happening
+/*An expression where addition is haprintening
  -JPlus = (+ JExpr JExpr)
  -Interp() could return another JExpr or just a value aka JNum which is also a JExpr
  -Is there any reason we're making this a class instead of overloading the + operator on JExprs? I guess using a different language's operator is cheating idk*/
@@ -44,7 +46,7 @@ public:
 		else{
 			return new JPlus(new_lhs, rhs);}
 	}
-	string pp(){return "(" + lhs->pp() + " + " + rhs->pp() + ")";}
+	string print(){return "(" + lhs->print() + " + " + rhs->print() + ")";}
 };
 
 /*Exact same as JPlus but with * operator*/
@@ -54,9 +56,9 @@ public:
 	JMult(JExpr* left, JExpr* right): lhs(left), rhs(right) {}
 	
 	JExpr* interp(){
-		JExpr* new_lhs = lhs.interp();
+		JExpr* new_lhs = lhs->interp();
 		if(new_lhs == lhs){
-			JExpr* = rhs.interp();
+			JExpr* new_rhs = rhs->interp();
 			if(new_rhs == rhs){
 				return new JNum(dynamic_cast<JNum*>(lhs)->n * dynamic_cast<JNum*>(rhs)->n);}
 			else{
@@ -64,6 +66,7 @@ public:
 		else{
 			return new JMult(new_lhs, rhs);}
 	}
-	string pp(){return "(" + lhs->pp() + " + " + rhs->pp() + ")";}
+	string print(){return "(" + lhs->print() + " * " + rhs->print() + ")";}
 };
 
+#endif
