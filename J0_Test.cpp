@@ -1,4 +1,4 @@
-#include "JExpr.hpp"
+#include "SExpr.hpp"
 
 int main(int argc, char* argv[]){
 	std::cout << "---Running J0 Test Suite---\n";
@@ -24,6 +24,9 @@ int main(int argc, char* argv[]){
 	std::cout << "10.) JPlus Interp: " << (plus_test->interp())->print() << "\n";
 	std::cout << "11.) JMult Interp: " << (mult_test->interp())->print() << "\n";
 	std::cout << "12.) All together now (JPlus * JMult): " << ((new JMult(plus_test->interp(), mult_test->interp()))->interp())->print() << "\n";
+	
+	string input = "(if (lt x 1) (add 2 (mul 3 (add 4 5))) y)";
+	cout << (parse(input))->print() << "\n";
 	system("pause");
 	return 0;
 }
